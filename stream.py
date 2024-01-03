@@ -88,8 +88,6 @@ with col1:
     if uri_ave_checked:
     
         st.subheader('売上カテゴリ平均', divider='rainbow')
-
-
         # チャート列追加
         df_mean.insert(len(df_mean.columns), 'charts', np.NaN)
         df_mean['charts'] = df_mean.apply(lambda row: [
