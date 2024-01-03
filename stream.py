@@ -75,7 +75,8 @@ with col1:
     Cdf.dataf['kei5'] = pd.to_numeric(Cdf.dataf['kei5'], errors='coerce')
 
     # 売上カテゴリ平均
-    st.subheader('売上カテゴリ平均', divider='rainbow')
+    uri_ave_checked = st.checkbox('ON/OFF')
+
     feature = ["category", "uri1", "uri2", "uri3", "uri4", "uri5"]
     df_selected = Cdf.dataf[feature]
     df_mean = df_selected.groupby("category").mean()[
@@ -83,23 +84,27 @@ with col1:
 
     df_mean.sort_values(by='uri5', inplace=True)
     df_mean = df_mean.round()
+    
+    if uri_ave_checked:
+    
+        st.subheader('売上カテゴリ平均', divider='rainbow')
 
-    # チャート列追加
-    df_mean.insert(len(df_mean.columns), 'charts', np.NaN)
-    df_mean['charts'] = df_mean.apply(lambda row: [
-                                     row['uri1'], row['uri2'], row['uri3'], row['uri4'], row['uri5']], axis=1)
 
-    st.data_editor(
-        df_mean,
-        column_config={
-            "charts": st.column_config.LineChartColumn(
-                "売上高推移",
-                width="medium",
-                help="The sales volume in the last 6 months",
-            ),
-        },
-    )
+        # チャート列追加
+        df_mean.insert(len(df_mean.columns), 'charts', np.NaN)
+        df_mean['charts'] = df_mean.apply(lambda row: [
+                                        row['uri1'], row['uri2'], row['uri3'], row['uri4'], row['uri5']], axis=1)
 
+        st.data_editor(
+            df_mean,
+            column_config={
+                "charts": st.column_config.LineChartColumn(
+                    "売上高推移",
+                    width="medium",
+                    help="The sales volume in the last 6 months",
+                ),
+            },
+        )
 
     st.subheader('企業別売上高推移', divider='rainbow')
     df_office = Cdf.dataf
@@ -114,6 +119,16 @@ with col1:
     df_selected = df_office[feature]
 
     df_selected.insert(0, 'Select', False)
+
+    uri_checked = st.checkbox('5年連続売上増')
+    if uri_checked:
+        df_selected = df_selected[
+            (df_selected['uri1'] < df_selected['uri2']) & 
+            (df_selected['uri2'] < df_selected['uri3']) & 
+            (df_selected['uri3'] < df_selected['uri4']) & 
+            (df_selected['uri4'] < df_selected['uri5'])
+        ]
+        
     edited_df = st.data_editor(
         df_selected,
         column_config={
@@ -130,7 +145,6 @@ with col1:
         },
     )
     selected_rows = edited_df[edited_df.Select]
-
 with col2:
 
     if option != None:

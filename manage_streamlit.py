@@ -60,4 +60,3 @@ class ManageSt:
         with col3:
             st.markdown("#### 経常利益")
             st.line_chart(kei_chart_df, height=400)
-        # st.write(dd)
