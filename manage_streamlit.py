@@ -26,7 +26,8 @@ class ManageSt:
                 })
 
                 # select_df = select_df.append(new_row_data,ignore_index=True)
-                df = df.append(new_row_data, ignore_index=True)
+                # df = df.append(new_row_data, ignore_index=True)
+                df = pd.concat([df, new_row_data], ignore_index=True, axis=0)
 
         # df = pd.DataFrame(select_df, index=columns)
 
