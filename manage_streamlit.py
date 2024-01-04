@@ -13,7 +13,7 @@ class ManageSt:
         columns = ["code", "category", "name",
                    "uri1", "uri2", "uri3", "uri4", "uri5", "chart",
                    "eiri1", "eiri2", "eiri3", "eiri4", "eiri5",
-                   "kei1", "kei2", "kei3", "kei", "kei5"]
+                   "kei1", "kei2", "kei3", "kei4", "kei5"]
         df = pd.DataFrame(columns=columns)
 
         for val in mst_df.values:
