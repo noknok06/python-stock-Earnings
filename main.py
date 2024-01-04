@@ -44,6 +44,9 @@ stocks = CSV.read_csv()
 
 for stock_code in stocks:
 
+    if stock_code[0].find("＃") == 0:
+        continue
+
     time.sleep(1) 
 
     try:

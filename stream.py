@@ -25,13 +25,22 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# select
+# category
 option = st.selectbox(
     "Please select a category",
     (category_column),
     index=None,
     placeholder="Select contact method...",
 )
+
+# cam_li = pd.DataFrame(lists).iloc[:,[2]].values
+
+# # リスト内包表記を使用して1次元のリストに変換
+# new_array = [str(row[0]) for row in cam_li]
+
+# campany_options = st.multiselect(
+#     'select campany name', cam_li)
+
 
 if option == None:
     lists = [row for row in lists if row[1]]
@@ -126,7 +135,10 @@ with col1:
             (df_selected['uri3'] < df_selected['uri4']) & 
             (df_selected['uri4'] < df_selected['uri5'])
         ]
-        
+    
+    # if len(campany_options) != 0:
+    #     df_selected = df_selected[df_selected['name'].isin(campany_options)]
+
     edited_df = st.data_editor(
         df_selected,
         column_config={
