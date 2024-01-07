@@ -19,7 +19,7 @@ class TabTop:
 
         # 2列目だけを取り出す
         category_column = stock_li.cut_col(1)
-        category_column = sorted(list(set(category_column)))
+        category_column = sorted(list(set(category_column[1:])))
 
 
         cam_li = pd.DataFrame(lists).iloc[:,[0]].values
@@ -150,6 +150,12 @@ class TabTop:
                 except:
                     feature = ["name","category", "uri1", "uri2", "uri3", "uri4", "uri5", "charts"]
                     df_selected = pd.DataFrame(columns=feature)            
+
+            try:
+                # 一行目を削除
+                df_selected.drop('code', inplace=True)
+            except:
+                pass
 
             edited_df = st.data_editor(
                 df_selected,

@@ -76,7 +76,7 @@ class TabCampanyDatail:
                     'Volume': df_Volume
                 })
             except:
-                st.write("株式情報が見つかりません")
+                st.warning("株式情報がありません")
                 st.stop()
 
             # Y軸の最大値を指定
@@ -136,73 +136,78 @@ class TabCampanyDatail:
             # Streamlitで表示
             st.altair_chart(combined_chart, use_container_width=True)
 
+        t_info = myf(ticker_symbol)
+
         with col2:
 
-            t_info = myf(ticker_symbol)
-            data = t_info.ticker_info.dividends
+            st.subheader('四半期財務', divider='rainbow')
 
-            data = data.reset_index()
-            data = data.sort_values(
-                by='Date', ascending=False)  # 'A' 列を基準にソート
-            data['date'] = data['Date'].dt.strftime('%Y-%m')
-            data.index = data['date']
-
-            data = data['Dividends']
-            top5_rows = data.head(5)  # 上位5つの行を抽出
-
-            st.subheader('配当', divider='rainbow')
-            st.write(top5_rows)
             try:
-                st.write(round(top5_rows[0] / df_Close[0] * 100, 2))
+                quarterly_financials = t_info.ticker_info.quarterly_financials
+
+                quarterly_financials = quarterly_financials.T
+                quarterly_financials = quarterly_financials.reset_index()
+                quarterly_financials['date'] = quarterly_financials['index'].dt.strftime('%Y-%m-%d')
+                quarterly_financials.index = quarterly_financials['date']
+                # quarterly_financials = quarterly_financials.reset_index()
+                # 行の順番を反転させる
+                quarterly_financials = quarterly_financials[::-1]
+                quarterly_financials = quarterly_financials.T
+
+
+                quarterly_financials.insert(len(quarterly_financials.columns), 'charts', np.NaN)
+                quarterly_financials['charts'] = quarterly_financials.apply(lambda row: [
+                                                row[0], row[1], row[2], row[3]], axis=1)
+                quarterly_financials_copy = quarterly_financials.copy()                  
+                quarterly_financials_copy.rename(index={
+                        'Operating Income': '営業利益',
+                        'Operating Revenue': '営業収益',
+                        # 'Operating Expense': '営業費用',
+                        'Gross Profit': '粗利益',
+                        'Cost Of Revenue': '収益原価',
+                        'Total Revenue': '総収益',
+                    }, inplace=True)
+
+                feature = [
+                    '営業利益',
+                    '営業収益',
+                    # '営業費用',
+                    '粗利益',
+                    '収益原価',
+                    '総収益',
+                ]
+                quarterly_financials_copy = quarterly_financials_copy.T
+                quarterly_financials_copy = quarterly_financials_copy[feature]
+                quarterly_financials_copy = quarterly_financials_copy.T
+                edited_df = st.data_editor(
+                    quarterly_financials_copy,
+                    column_config={
+                        "charts": st.column_config.LineChartColumn(
+                            "各種推移",
+                            width="medium",
+                            help="The sales volume in the last 6 months",
+                        )
+                    },
+                )
+
+                data = t_info.ticker_info.dividends
+                data = data.reset_index()
+                data = data.sort_values(
+                    by='Date', ascending=False)  # 'A' 列を基準にソート
+                data['date'] = data['Date'].dt.strftime('%Y-%m')
+                data.index = data['date']
+
+                data = data['Dividends']
+                top5_rows = data.head(5)  # 上位5つの行を抽出
+
+                st.subheader('配当', divider='rainbow')
+                st.write(top5_rows)
+                try:
+                    st.write(round(top5_rows[0] / df_Close[0] * 100, 2))
+                except:
+                    pass
+
             except:
-                pass
+                st.warning("四半期データがありません")
+                st.stop()
 
-
-        st.subheader('四半期財務', divider='rainbow')
-
-        try:
-            quarterly_financials = t_info.ticker_info.quarterly_financials
-            quarterly_financials = quarterly_financials.T
-            # quarterly_financials = quarterly_financials.reset_index()
-            # 行の順番を反転させる
-            quarterly_financials = quarterly_financials[::-1]
-            quarterly_financials = quarterly_financials.T
-
-
-            quarterly_financials.insert(len(quarterly_financials.columns), 'charts', np.NaN)
-            quarterly_financials['charts'] = quarterly_financials.apply(lambda row: [
-                                            row[0], row[1], row[2], row[3]], axis=1)
-            quarterly_financials_copy = quarterly_financials.copy()                  
-            quarterly_financials_copy.rename(index={
-                    'Operating Income': '営業利益',
-                    'Operating Revenue': '営業収益',
-                    # 'Operating Expense': '営業費用',
-                    'Gross Profit': '粗利益',
-                    'Cost Of Revenue': '収益原価',
-                    'Total Revenue': '総収益',
-                }, inplace=True)
-
-            feature = [
-                '営業利益',
-                '営業収益',
-                # '営業費用',
-                '粗利益',
-                '収益原価',
-                '総収益',
-            ]
-            quarterly_financials_copy = quarterly_financials_copy.T
-            quarterly_financials_copy = quarterly_financials_copy[feature]
-            quarterly_financials_copy = quarterly_financials_copy.T
-            edited_df = st.data_editor(
-                quarterly_financials_copy,
-                column_config={
-                    "charts": st.column_config.LineChartColumn(
-                        "各種推移",
-                        width="medium",
-                        help="The sales volume in the last 6 months",
-                    )
-                },
-            )
-        except:
-            st.write("四半期データがありません")
-            st.stop()

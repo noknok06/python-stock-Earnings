@@ -17,6 +17,9 @@ class ManageCsv:
 
         self.data = csv_data
 
+    def read_csv():
+        return pd.read_csv('result.csv')
+
     def cleansing(self):
 
         for row in self.data:
