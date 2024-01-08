@@ -66,7 +66,8 @@ class TabCampanyDatail:
             df = df.reset_index()
             df_Close = df['Close']
             df_25ma = df['Close'].rolling(window=25).mean()
-            df_Date = df['Date'].astype('datetime64[D]')
+            # df_Date = df['Date'].astype('datetime64[D]')
+            df_Date = df['Date']
             df_Volume = df['Volume']
 
             data = pd.DataFrame({
