@@ -75,7 +75,9 @@ class TabCampanyDatail:
                     '25ma': df_25ma,
                     'Volume': df_Volume
                 })
-            except:
+            except Exception as e:
+                print(e)
+
                 st.warning("株式情報がありません")
                 st.stop()
 
@@ -204,10 +206,12 @@ class TabCampanyDatail:
                 st.write(top5_rows)
                 try:
                     st.write(round(top5_rows[0] / df_Close[0] * 100, 2))
-                except:
+                except Exception as e:
+                    print(e)
                     pass
 
-            except:
+            except Exception as e:
+                print(e)
                 st.warning("四半期データがありません")
                 st.stop()
 

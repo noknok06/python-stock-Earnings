@@ -40,9 +40,10 @@ class TabPortfolio:
                     try:
                         category = select_df['category'].values[0]
                         name = select_df['name'].values[0]
-                    except:
+                    except Exception as e:
                         # category = select_df['category'][0]
                         # name = select_df['name'][0]
+                        print(e)
                         st.warning("株式銘柄が見つかりません")
                         st.stop()
 
@@ -67,19 +68,21 @@ class TabPortfolio:
                         st.session_state.data = st.session_state.data.append(
                             new_data, ignore_index=True)
 
-                    except:
+                    except Exception as e:
+                        print(e)
                         st.warning("株式情報がありません")
-        with col2:
-
-            if len(st.session_state.data) > 0:
 
                 df_rate = st.session_state.data[st.session_state.data['Select']==False]
                 total = df_rate['購入額'].sum()
                 df_rate['割合'] = df_rate['購入額'] / total
 
-                # Display the dataframe outside the form
+                st.caption("合計金額")
+                st.write(total)
 
-                df_rate
+        with col2:
+
+            if len(st.session_state.data) > 0:
+
                 edited_df = st.data_editor(
                     df_rate,
                     column_config={
@@ -92,8 +95,6 @@ class TabPortfolio:
                 )
                 st.session_state.data = edited_df
 
-                st.caption("合計金額")
-                st.write(total)
 
         if not df_rate.empty:
             df_rate.index = df_rate['カテゴリ']

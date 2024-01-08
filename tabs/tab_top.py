@@ -154,7 +154,8 @@ class TabTop:
             try:
                 # 一行目を削除
                 df_selected.drop('code', inplace=True)
-            except:
+            except Exception as e:
+                print(e)
                 pass
 
             edited_df = st.data_editor(
@@ -175,7 +176,9 @@ class TabTop:
 
             try:
                 selected_rows = edited_df[edited_df.Select]
-            except:
+            except Exception as e:
+                print(e)
+
                 st.stop()
 
         with col2:
