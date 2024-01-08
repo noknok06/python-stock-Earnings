@@ -193,35 +193,36 @@ class TabTop:
 
         with col2:
 
+            try:
+                selected_row = selected_rows[selected_rows["name"]==changed_rows["name"][0]]
+                if not selected_rows.empty:
+                    if selected_row.empty:
+                        selected_row = selected_rows.head()
+
+                    st.subheader('売上推移 ' + selected_row['name'][0], divider='rainbow')
+                    uri1 = selected_row['uri1'][0]
+                    uri2 = selected_row['uri2'][0]
+                    uri3 = selected_row['uri3'][0]
+                    uri4 = selected_row['uri4'][0]
+                    uri5 = selected_row['uri5'][0]
+
+                    col1, col2, col3, col4 = st.columns(4)
+
+                    with col1:
+                        st.metric(label="昨年比４", value=uri2 -
+                                uri1, delta=str(((1-uri1/uri2)*100).round(3)) + "%")  # 指標
+                    with col2:
+                        st.metric(label="昨年比３", value=uri3 -
+                                uri2, delta=str(((1-uri2/uri3)*100).round(3)) + "%")  # 指標
+                    with col3:
+                        st.metric(label="昨年比２", value=uri4 -
+                                uri3, delta=str(((1-uri3/uri4)*100).round(3)) + "%")  # 指標
+                    with col4:
+                        st.metric(label="昨年比１", value=uri5 -
+                                uri4, delta=str(((1-uri4/uri5)*100).round(3)) + "%")  # 指標
+            except Exception as e:
+                print(e)
+
             if len(selected_rows)>0:
-
-                try:
-                    selected_row = selected_rows[selected_rows["name"]==changed_rows["name"][0]]
-
-                    if not selected_row.empty:
-
-                        st.subheader('売上推移 ' + selected_row['name'][0], divider='rainbow')
-                        uri1 = selected_row['uri1'][0]
-                        uri2 = selected_row['uri2'][0]
-                        uri3 = selected_row['uri3'][0]
-                        uri4 = selected_row['uri4'][0]
-                        uri5 = selected_row['uri5'][0]
-
-                        col1, col2, col3, col4 = st.columns(4)
-
-                        with col1:
-                            st.metric(label="昨年比４", value=uri2 -
-                                    uri1, delta=str(((1-uri1/uri2)*100).round(3)) + "%")  # 指標
-                        with col2:
-                            st.metric(label="昨年比３", value=uri3 -
-                                    uri2, delta=str(((1-uri2/uri3)*100).round(3)) + "%")  # 指標
-                        with col3:
-                            st.metric(label="昨年比２", value=uri4 -
-                                    uri3, delta=str(((1-uri3/uri4)*100).round(3)) + "%")  # 指標
-                        with col4:
-                            st.metric(label="昨年比１", value=uri5 -
-                                    uri4, delta=str(((1-uri4/uri5)*100).round(3)) + "%")  # 指標
-                except Exception as e:
-                    print(e)
 
                 mstl.create_A(Cdf.dataf, selected_rows)
