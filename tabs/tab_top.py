@@ -9,8 +9,9 @@ from manage_csv import ManageCsv as cs
 from manage_dataframe import ManageDataFrame as mdf
 from manage_streamlit import ManageSt as mstl
 
+
 class TabTop:
-    
+
     def disp_page():
 
         stock_li = cs()
@@ -21,8 +22,7 @@ class TabTop:
         category_column = stock_li.cut_col(1)
         category_column = sorted(list(set(category_column[1:])))
 
-
-        cam_li = pd.DataFrame(lists).iloc[:,[0]].values
+        cam_li = pd.DataFrame(lists).iloc[:, [0]].values
 
         # リスト内包表記を使用して1次元のリストに変換
         new_array = [row[0] for row in cam_li]
@@ -66,30 +66,44 @@ class TabTop:
 
             # ヘッダー名設定
             feature = ["code", "category", "name",
-                    "uri1", "uri2", "uri3", "uri4", "uri5",
-                    "eiri1", "eiri2", "eiri3", "eiri4", "eiri5",
-                    "kei1", "kei2", "kei3", "kei4", "kei5"]
+                       "uri1", "uri2", "uri3", "uri4", "uri5",
+                       "eiri1", "eiri2", "eiri3", "eiri4", "eiri5",
+                       "kei1", "kei2", "kei3", "kei4", "kei5"]
             Cdf.dataf.columns = feature
 
             # 数値に変換
-            Cdf.dataf['uri1'] = pd.to_numeric(Cdf.dataf['uri1'], errors='coerce')
-            Cdf.dataf['uri2'] = pd.to_numeric(Cdf.dataf['uri2'], errors='coerce')
-            Cdf.dataf['uri3'] = pd.to_numeric(Cdf.dataf['uri3'], errors='coerce')
-            Cdf.dataf['uri4'] = pd.to_numeric(Cdf.dataf['uri4'], errors='coerce')
-            Cdf.dataf['uri5'] = pd.to_numeric(Cdf.dataf['uri5'], errors='coerce')
+            Cdf.dataf['uri1'] = pd.to_numeric(
+                Cdf.dataf['uri1'], errors='coerce')
+            Cdf.dataf['uri2'] = pd.to_numeric(
+                Cdf.dataf['uri2'], errors='coerce')
+            Cdf.dataf['uri3'] = pd.to_numeric(
+                Cdf.dataf['uri3'], errors='coerce')
+            Cdf.dataf['uri4'] = pd.to_numeric(
+                Cdf.dataf['uri4'], errors='coerce')
+            Cdf.dataf['uri5'] = pd.to_numeric(
+                Cdf.dataf['uri5'], errors='coerce')
 
-            Cdf.dataf['eiri1'] = pd.to_numeric(Cdf.dataf['eiri1'], errors='coerce')
-            Cdf.dataf['eiri2'] = pd.to_numeric(Cdf.dataf['eiri2'], errors='coerce')
-            Cdf.dataf['eiri3'] = pd.to_numeric(Cdf.dataf['eiri3'], errors='coerce')
-            Cdf.dataf['eiri4'] = pd.to_numeric(Cdf.dataf['eiri4'], errors='coerce')
-            Cdf.dataf['eiri5'] = pd.to_numeric(Cdf.dataf['eiri5'], errors='coerce')
+            Cdf.dataf['eiri1'] = pd.to_numeric(
+                Cdf.dataf['eiri1'], errors='coerce')
+            Cdf.dataf['eiri2'] = pd.to_numeric(
+                Cdf.dataf['eiri2'], errors='coerce')
+            Cdf.dataf['eiri3'] = pd.to_numeric(
+                Cdf.dataf['eiri3'], errors='coerce')
+            Cdf.dataf['eiri4'] = pd.to_numeric(
+                Cdf.dataf['eiri4'], errors='coerce')
+            Cdf.dataf['eiri5'] = pd.to_numeric(
+                Cdf.dataf['eiri5'], errors='coerce')
 
-            Cdf.dataf['kei1'] = pd.to_numeric(Cdf.dataf['kei1'], errors='coerce')
-            Cdf.dataf['kei2'] = pd.to_numeric(Cdf.dataf['kei2'], errors='coerce')
-            Cdf.dataf['kei3'] = pd.to_numeric(Cdf.dataf['kei3'], errors='coerce')
-            Cdf.dataf['kei4'] = pd.to_numeric(Cdf.dataf['kei4'], errors='coerce')
-            Cdf.dataf['kei5'] = pd.to_numeric(Cdf.dataf['kei5'], errors='coerce')
-
+            Cdf.dataf['kei1'] = pd.to_numeric(
+                Cdf.dataf['kei1'], errors='coerce')
+            Cdf.dataf['kei2'] = pd.to_numeric(
+                Cdf.dataf['kei2'], errors='coerce')
+            Cdf.dataf['kei3'] = pd.to_numeric(
+                Cdf.dataf['kei3'], errors='coerce')
+            Cdf.dataf['kei4'] = pd.to_numeric(
+                Cdf.dataf['kei4'], errors='coerce')
+            Cdf.dataf['kei5'] = pd.to_numeric(
+                Cdf.dataf['kei5'], errors='coerce')
 
             feature = ["category", "uri1", "uri2", "uri3", "uri4", "uri5"]
             df_selected = Cdf.dataf[feature]
@@ -98,14 +112,14 @@ class TabTop:
 
             df_mean.sort_values(by='uri5', inplace=True, ascending=False)
             df_mean = df_mean.round()
-            
+
             if uri_ave_checked:
-            
+
                 st.subheader('売上カテゴリ平均', divider='rainbow')
                 # チャート列追加
                 df_mean.insert(len(df_mean.columns), 'charts', np.NaN)
                 df_mean['charts'] = df_mean.apply(lambda row: [
-                                                row['uri1'], row['uri2'], row['uri3'], row['uri4'], row['uri5']], axis=1)
+                    row['uri1'], row['uri2'], row['uri3'], row['uri4'], row['uri5']], axis=1)
                 # 一行目を削除
                 # df_mean.drop('category', inplace=True)
 
@@ -125,24 +139,43 @@ class TabTop:
             # チャート列追加
             df_office.insert(len(df_office.columns), 'charts', np.NaN)
             df_office['charts'] = df_office.apply(lambda row: [
-                                            row['uri1'], row['uri2'], row['uri3'], row['uri4'], row['uri5']], axis=1)
+                row['uri1'], row['uri2'], row['uri3'], row['uri4'], row['uri5']], axis=1)
 
             df_office.index = df_office["code"]
 
-            feature = ["name","category", "uri1", "uri2", "uri3", "uri4", "uri5", "charts"]
+            feature = ["name", "category", "uri1", "uri2", "uri3", "uri4",
+                       "uri5", "eiri1", "eiri2", "eiri3", "eiri4", "eiri5", "charts"]
             df_selected = df_office[feature]
 
             df_selected.insert(0, 'Select', False)
 
-            uri_checked = st.checkbox('5年連続売上増')
+
+            uri_col1, uri_col2 = st.columns(2)
+
+            with uri_col1:
+                uri_checked = st.checkbox('5年連続売上増')
+            with uri_col2:
+                uririe_checked = st.checkbox('5年連続増収増益')
+
             if uri_checked:
                 df_selected = df_selected[
-                    (df_selected['uri1'] < df_selected['uri2']) & 
-                    (df_selected['uri2'] < df_selected['uri3']) & 
-                    (df_selected['uri3'] < df_selected['uri4']) & 
+                    (df_selected['uri1'] < df_selected['uri2']) &
+                    (df_selected['uri2'] < df_selected['uri3']) &
+                    (df_selected['uri3'] < df_selected['uri4']) &
                     (df_selected['uri4'] < df_selected['uri5'])
                 ]
-            
+            if uririe_checked:
+                df_selected = df_selected[
+                    (df_selected['uri1'] < df_selected['uri2']) &
+                    (df_selected['uri2'] < df_selected['uri3']) &
+                    (df_selected['uri3'] < df_selected['uri4']) &
+                    (df_selected['uri4'] < df_selected['uri5']) &
+                    (df_selected['eiri1'] < df_selected['eiri2']) &
+                    (df_selected['eiri2'] < df_selected['eiri3']) &
+                    (df_selected['eiri3'] < df_selected['eiri4']) &
+                    (df_selected['eiri4'] < df_selected['eiri5'])
+                ]
+
             if len(company_options) != 0:
                 # df_selected = df_selected[df_selected['name'].isin(company_options)]
                 arr = []
@@ -151,8 +184,9 @@ class TabTop:
                 try:
                     df_selected = df_selected.loc[arr, :]
                 except:
-                    feature = ["name","category", "uri1", "uri2", "uri3", "uri4", "uri5", "charts"]
-                    df_selected = pd.DataFrame(columns=feature)            
+                    feature = ["name", "category", "uri1",
+                               "uri2", "uri3", "uri4", "uri5", "charts"]
+                    df_selected = pd.DataFrame(columns=feature)
 
             try:
                 # 一行目を削除
@@ -160,6 +194,11 @@ class TabTop:
             except Exception as e:
                 print(e)
                 pass
+
+            feature = ["Select", "name", "category", "uri1", "uri2", "uri3",
+                       "uri4", "uri5", "charts"]
+            df_selected = df_selected[feature]
+
             df_selected.sort_values(by='uri5', inplace=True, ascending=False)
             edited_df = st.data_editor(
                 df_selected,
@@ -180,7 +219,8 @@ class TabTop:
             try:
                 if 'selecteds' not in st.session_state:
                     st.session_state.selecteds = edited_df
-                changed_rows = df_selected[st.session_state.selecteds['Select'] != edited_df['Select']]
+                changed_rows = df_selected[st.session_state.selecteds['Select']
+                                           != edited_df['Select']]
 
                 st.session_state.selecteds = edited_df
                 selected_rows = edited_df[edited_df.Select]
@@ -194,12 +234,14 @@ class TabTop:
         with col2:
 
             try:
-                selected_row = selected_rows[selected_rows["name"]==changed_rows["name"][0]]
+                selected_row = selected_rows[selected_rows["name"]
+                                             == changed_rows["name"][0]]
                 if not selected_rows.empty:
                     if selected_row.empty:
                         selected_row = selected_rows.head()
 
-                    st.subheader('売上推移 ' + selected_row['name'][0], divider='rainbow')
+                    st.subheader(
+                        '売上推移 ' + selected_row['name'][0], divider='rainbow')
                     uri1 = selected_row['uri1'][0]
                     uri2 = selected_row['uri2'][0]
                     uri3 = selected_row['uri3'][0]
@@ -210,19 +252,19 @@ class TabTop:
 
                     with col1:
                         st.metric(label="昨年比４", value=uri2 -
-                                uri1, delta=str(((1-uri1/uri2)*100).round(3)) + "%")  # 指標
+                                  uri1, delta=str(((1-uri1/uri2)*100).round(3)) + "%")  # 指標
                     with col2:
                         st.metric(label="昨年比３", value=uri3 -
-                                uri2, delta=str(((1-uri2/uri3)*100).round(3)) + "%")  # 指標
+                                  uri2, delta=str(((1-uri2/uri3)*100).round(3)) + "%")  # 指標
                     with col3:
                         st.metric(label="昨年比２", value=uri4 -
-                                uri3, delta=str(((1-uri3/uri4)*100).round(3)) + "%")  # 指標
+                                  uri3, delta=str(((1-uri3/uri4)*100).round(3)) + "%")  # 指標
                     with col4:
                         st.metric(label="昨年比１", value=uri5 -
-                                uri4, delta=str(((1-uri4/uri5)*100).round(3)) + "%")  # 指標
+                                  uri4, delta=str(((1-uri4/uri5)*100).round(3)) + "%")  # 指標
             except Exception as e:
                 print(e)
 
-            if len(selected_rows)>0:
+            if len(selected_rows) > 0:
 
                 mstl.create_A(Cdf.dataf, selected_rows)

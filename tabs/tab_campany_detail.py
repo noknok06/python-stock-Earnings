@@ -186,7 +186,7 @@ class TabCampanyDatail:
                 edited_df = st.data_editor(
                     quarterly_financials_copy,
                     column_config={
-                        "charts": st.column_config.LineChartColumn(
+                        "charts": st.column_config.BarChartColumn(
                             "各種推移",
                             width="medium",
                             help="The sales volume in the last 6 months",
