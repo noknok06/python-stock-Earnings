@@ -18,7 +18,6 @@ class TabPortfolio:
             )
             st.session_state.data = pd.DataFrame(columns=colms)
 
-
         col1, col2 = st.columns(2)
         df_rate = st.session_state.data
 
@@ -65,19 +64,22 @@ class TabPortfolio:
                             '購入額': int(close)*int(stock_num),
                         }
 
-                        st.session_state.data = st.session_state.data.append(
-                            new_data, ignore_index=True)
+                        # st.session_state.data = st.session_state.data.append(
+                        #     new_data, ignore_index=True)
+                        new_data_df = pd.DataFrame([new_data])
+                        st.session_state.data = pd.concat(
+                            [st.session_state.data, new_data_df], ignore_index=True)
 
                     except Exception as e:
                         print(e)
                         st.warning("株式情報がありません")
 
-                df_rate = st.session_state.data[st.session_state.data['Select']==False]
-                total = df_rate['購入額'].sum()
-                df_rate['割合'] = df_rate['購入額'] / total
+                    df_rate = st.session_state.data[st.session_state.data['Select'] == False]
+                    total = df_rate['購入額'].sum()
+                    df_rate['割合'] = df_rate['購入額'] / total
 
-                st.caption("合計金額")
-                st.write(total)
+                    st.caption("合計金額")
+                    st.write(total)
 
         with col2:
 
@@ -94,7 +96,6 @@ class TabPortfolio:
                     },
                 )
                 st.session_state.data = edited_df
-
 
         if not df_rate.empty:
             df_rate.index = df_rate['カテゴリ']

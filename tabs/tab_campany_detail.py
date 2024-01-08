@@ -79,7 +79,7 @@ class TabCampanyDatail:
                 print(e)
 
                 st.warning("株式情報がありません")
-                st.stop()
+                return
 
             # Y軸の最大値を指定
             min_y_value = df_Close.min()-100
@@ -213,5 +213,5 @@ class TabCampanyDatail:
             except Exception as e:
                 print(e)
                 st.warning("四半期データがありません")
-                st.stop()
+                return
 
