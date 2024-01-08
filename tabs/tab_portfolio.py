@@ -6,6 +6,7 @@ import datetime as dt
 import plotly.express as px
 
 from apis.web_datareader import WebDatareader as wdr
+from apis.scraping_html import ScrapingHTML as scht
 
 
 class TabPortfolio:
@@ -54,6 +55,8 @@ class TabPortfolio:
                             False)
                     try:
                         close = df_symbol['Close'][0]
+                        cstock = scht(stock_code)
+                        soup = cstock.get_html_gaiyo()
                         new_data = {
                             'Select': False,
                             '証券コード': stock_code,
@@ -62,6 +65,7 @@ class TabPortfolio:
                             '購入数': stock_num,
                             '株価': close,
                             '購入額': int(close)*int(stock_num),
+                            # '発行済み株式数': ,
                         }
 
                         # st.session_state.data = st.session_state.data.append(
@@ -99,7 +103,11 @@ class TabPortfolio:
 
         if not df_rate.empty:
             df_rate.index = df_rate['カテゴリ']
-            fig1 = px.bar(df_rate, y='割合', x='カテゴリ', title='構成比率')
+            fig1 = px.bar(df_rate, y='割合', x='カテゴリ', title='カテゴリ別購入額構成比率')
 
             # Streamlitアプリにプロットを追加
             st.plotly_chart(fig1, use_container_width=True)
+
+        # 時価総額取得
+        # 時価総額の合計値計算
+        # 時価総額加重平均を取得

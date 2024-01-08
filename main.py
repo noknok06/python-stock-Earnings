@@ -33,7 +33,7 @@ class ScrapingHTML():
     def __init__(self, stock_no):
         self.stock_no = stock_no
 
-    def get_html(self):
+    def get_html_kessan(self):
 
         r = requests.get("https://www.nikkei.com/nkd/company/kessan/?scode=" + str(self.stock_no))        
         soup = BeautifulSoup(r.content, "html.parser")
@@ -51,7 +51,7 @@ for stock_code in stocks:
 
     try:
         cStock = ScrapingHTML(stock_code[0])
-        soup =  cStock.get_html()
+        soup =  cStock.get_html_kessan()
 
         write_elem = []
 

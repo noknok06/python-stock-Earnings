@@ -8,6 +8,7 @@ import numpy as np
 import altair as alt
 
 from apis.manage_yfinance import ManageYfinance as myf
+from apis.scraping_html import ScrapingHTML as shtml
 
 
 class TabCampanyDatail:
@@ -108,7 +109,7 @@ class TabCampanyDatail:
             )
 
             
-            volume_on = st.toggle('出来高チャート')
+            volume_on = st.toggle('出来高チャート', True)
 
             if volume_on:
                 # 右側の軸を追加
