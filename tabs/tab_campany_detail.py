@@ -59,27 +59,27 @@ class TabCampanyDatail:
             ticker_symbol_dr = ticker_symbol + ".JP"
 
             # データ取得
-            try:
-                df = web.DataReader(
-                    ticker_symbol_dr, data_source='stooq', start=start_date, end=end_date)
+        # try:
+            df = web.DataReader(
+                ticker_symbol_dr, data_source='stooq', start=start_date, end=end_date)
 
-                df = df.reset_index()
-                df_Close = df['Close']
-                df_25ma = df['Close'].rolling(window=25).mean()
-                df_Date = df['Date'].astype('datetime64[D]')
-                df_Volume = df['Volume']
+            df = df.reset_index()
+            df_Close = df['Close']
+            df_25ma = df['Close'].rolling(window=25).mean()
+            df_Date = df['Date'].astype('datetime64[D]')
+            df_Volume = df['Volume']
 
-                data = pd.DataFrame({
-                    'Date': df_Date,
-                    'Stock_Price': df_Close,
-                    '25ma': df_25ma,
-                    'Volume': df_Volume
+            data = pd.DataFrame({
+                'Date': df_Date,
+                'Stock_Price': df_Close,
+                '25ma': df_25ma,
+                'Volume': df_Volume
                 })
-            except Exception as e:
-                print(e)
+            # except Exception as e:
+            #     print(e)
 
-                st.warning("株式情報がありません")
-                return
+            #     st.warning("株式情報がありません")
+            #     return
 
             # Y軸の最大値を指定
             min_y_value = df_Close.min()-100
