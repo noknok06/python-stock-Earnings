@@ -8,6 +8,7 @@ import plotly.express as px
 from manage_csv import ManageCsv as cs
 from manage_dataframe import ManageDataFrame as mdf
 from manage_streamlit import ManageSt as mstl
+from apis.web_datareader import WebDatareader as wd
 
 
 class TabTop:
@@ -17,6 +18,7 @@ class TabTop:
         stock_li = cs()
         stock_li.cleansing()
         lists = stock_li.data
+        select_close = 0
 
         # 2列目だけを取り出す
         category_column = stock_li.cut_col(1)
@@ -68,7 +70,8 @@ class TabTop:
             feature = ["code", "category", "name",
                        "uri1", "uri2", "uri3", "uri4", "uri5",
                        "eiri1", "eiri2", "eiri3", "eiri4", "eiri5",
-                       "kei1", "kei2", "kei3", "kei4", "kei5"]
+                       "kei1", "kei2", "kei3", "kei4", "kei5",
+                       "dividend"]
             Cdf.dataf.columns = feature
 
             # 数値に変換
@@ -144,7 +147,7 @@ class TabTop:
             df_office.index = df_office["code"]
 
             feature = ["name", "category", "uri1", "uri2", "uri3", "uri4",
-                       "uri5", "eiri1", "eiri2", "eiri3", "eiri4", "eiri5", "charts"]
+                       "uri5", "eiri1", "eiri2", "eiri3", "eiri4", "eiri5", "dividend", "charts"]
             df_selected = df_office[feature]
 
             df_selected.insert(0, 'Select', False)
@@ -184,7 +187,7 @@ class TabTop:
                 try:
                     df_selected = df_selected.loc[arr, :]
                 except:
-                    feature = ["name", "category", "uri1",
+                    feature = ["name", "category", "dividend", "uri1",
                                "uri2", "uri3", "uri4", "uri5", "charts"]
                     df_selected = pd.DataFrame(columns=feature)
 
@@ -195,7 +198,7 @@ class TabTop:
                 print(e)
                 pass
 
-            feature = ["Select", "name", "category", "uri1", "uri2", "uri3",
+            feature = ["Select", "name", "dividend", "category", "uri1", "uri2", "uri3",
                        "uri4", "uri5", "charts"]
             df_selected = df_selected[feature]
 
@@ -240,8 +243,13 @@ class TabTop:
                     if selected_row.empty:
                         selected_row = selected_rows.head()
 
+                    code = selected_row.index.values[0]
+                    stock = wd.get_stock_data(code)
+                    select_close = stock['Close'][0]
+
+                    divide_rate = str(round(float(selected_row["dividend"][0])/select_close,2) * 100) + "%"
                     st.subheader(
-                        '売上推移 ' + selected_row['name'][0], divider='rainbow')
+                        '売上推移　' + selected_row['name'][0] + "　¥" + str(select_close) + "　" + str(divide_rate), divider='rainbow')
                     uri1 = selected_row['uri1'][0]
                     uri2 = selected_row['uri2'][0]
                     uri3 = selected_row['uri3'][0]
@@ -267,4 +275,6 @@ class TabTop:
 
             if len(selected_rows) > 0:
 
-                mstl.create_A(Cdf.dataf, selected_rows)
+                mstl.create_A(Cdf.dataf, selected_rows)        
+
+        
